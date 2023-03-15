@@ -1,66 +1,43 @@
-require("@nomiclabs/hardhat-waffle")
-require("hardhat-gas-reporter")
-require("@nomiclabs/hardhat-etherscan")
+require("@nomicfoundation/hardhat-toolbox")
 require("dotenv").config()
+require("@nomiclabs/hardhat-etherscan")
+require("./tasks/block-number")
+require("hardhat-gas-reporter")
 require("solidity-coverage")
-require("hardhat-deploy")
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
+require("@nomiclabs/hardhat-waffle")
 
-const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY || ""
+/** @type import('hardhat/config').HardhatUserConfig */
 const GOERLI_RPC_URL =
-    process.env.GOERLI_RPC_URL ||
-    "https://eth-mainnet.alchemyapi.io/v2/your-api-key"
-const PRIVATE_KEY =
-    process.env.PRIVATE_KEY ||
-    "0x11ee3108a03081fe260ecdc106554d09d9d1209bcafd46942b10e02943effc4a"
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ""
+    process.env.GOERLI_RPC_URL || "https://eth-goerli/example"
+const PRIVATE_KEY = process.env.PRIVATE_KEY || "0xkey"
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "key"
+const COINMARKETCAP_API = process.env.COINMARKETCAP_API || "key"
+
+//    "||" means if process.env... does not exits then hardhat will take other one
 
 module.exports = {
     defaultNetwork: "hardhat",
     networks: {
-        hardhat: {
-            chainId: 31337,
-            // gasPrice: 130000000000,
-        },
-        goerli: {
-            url: GOERLI_RPC_URL,
-            accounts: [PRIVATE_KEY],
-            chainId: 5,
-            blockConfirmations: 6,
-        },
+        goerli: { url: GOERLI_RPC_URL, accounts: [PRIVATE_KEY], chainId: 5 },
+        localhost: { url: "http://127.0.0.1:8545/", chainId: 31337 },
+        // we dont need to add accounts here as hardhat will take itself
     },
-    solidity: {
-        compilers: [
-            {
-                version: "0.8.7",
-            },
-            {
-                version: "0.6.6",
-            },
-        ],
-    },
+    solidity: "0.8.17",
     etherscan: {
         apiKey: ETHERSCAN_API_KEY,
-        // customChains: [], // uncomment this line if you are getting a TypeError: customChains is not iterable
     },
+    // gas report shows how much it will cost to deploy on different chains
     gasReporter: {
-        enabled: false,
-        currency: "USD",
+        enabled: true, //if dont want to run then do "false"
         outputFile: "gas-report.txt",
         noColors: true,
-        coinmarketcap: COINMARKETCAP_API_KEY,
-    },
-    namedAccounts: {
-        deployer: {
-            default: 0, // here this will by default take the first account as deployer
-            1: 0, // similarly on mainnet it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
-        },
-    },
-    mocha: {
-        timeout: 500000,
+        currency: "USD", //we can get the cost of each function in USD or ethereum
+        // in order to get currency we need api key
+        coinmarketcap: COINMARKETCAP_API,
+        //If we want to deploy to other blockchain eg Ethereum(defalut),binance(BNB),polygon(MATIC),heco(HT), avalanche(AVAX),Moonriver(MOVR)
+        // token: "BNB",
     },
 }
+
+// yarn add hardhat-gas-reporter --dev
+// we have to run test-deploy.js => yarn hardhat test

@@ -1,0 +1,9 @@
+Test Coverage
+
+this provides security to simplaStorage contract 
+we can take every steps to prevent hack/attack when we deploy in mainnet
+this goes through all of our "tests" and see that how many lines of our .sol codeis coered in a test 
+if we have not wrote any test for some code it will say write some test for this code 
+
+yarn add --dev solidity-coverage
+add in hardhat config
