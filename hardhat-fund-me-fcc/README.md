@@ -1,4 +1,4 @@
-# Hardhat Fund Me
+# Lesson 7: Hardhat-Fund-Me
 
 *This repo has been updated to work with Goerli over Rinkeby.*
 
