@@ -1,0 +1,14 @@
+{
+  "name": "l-8--full-stack-fundme",
+  "version": "1.0.0",
+  "description": "When building Dapps, you usually have 2 repos -One for the smart contracts -One for Front-end / website",
+  "main": "App.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.8.5"
+  }
+}
