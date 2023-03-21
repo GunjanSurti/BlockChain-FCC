@@ -1,6 +1,7 @@
 // we copied ethers library form docs so we can "import", only for this lesson
 // in future lesson will do yarn add ethers ....
 import { ethers } from "./ethers-5.6.esm.min.js"
+import { abi, contractAddress } from "./constants.js"
 
 const connectButton = document.getElementById("connectBtn")
 const fundButton = document.getElementById("fundBtn")
@@ -24,13 +25,32 @@ async function connect() {
         connectButton.innerText = "Please get Metamask"
     }
 }
-async function fund(ethAmount) {
+async function fund() {
+    const ethAmount = "56"
     console.log(`Funding with ${ethAmount}...`)
     if (typeof window.ethereum !== "undefined") {
         //to send a transaction we always need
         // 1. provider / connection to blockchain
         // 2. signer / wallet / someone with some gas
         // 3. contract that we are going to interract with (ABI, Address )
+        // JsonRPCProvider => alchemy link etc
+        // Web3Provider => for metamask
+        // Web3Provider is a object which wraps around stuff like metamask
+        // it takes http endpoint and automatically sticks us with ethers for us
+        // ethers.providers.Web3Provider() => looks for metamask provider and goes
+        // ahh i found the http-endpoint(window.ethereum) and that will be our provider
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+        const signer = provider.getSigner()
+        const contract = new ethers.Contract(contractAddress, abi, signer)
+        try {
+            const transactionResponse = await contract.fund({
+                value: ethers.utils.parseEther(ethAmount),
+            })
+        } catch (error) {
+            console.log("Rejected!!")
+        }
     }
 }
 // window.onload = connect();
