@@ -98,8 +98,7 @@ async function withdraw() {
             console.log(error)
         }
     }
-}
-
+}    
 function listenForTransactionMined(transactionResponse, provider) {
     console.log(`Mining ${transactionResponse.hash}...`)
     // reason for promise is bcz  we need to create listner for blockchain
