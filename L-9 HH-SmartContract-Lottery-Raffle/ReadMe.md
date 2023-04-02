@@ -1,4 +1,4 @@
->> We will Chainlink VRF for verifiable Random number and Chainlink Keepers to automatically trigger to pick winner when the time interval is Up!!
+>We will Chainlink VRF for verifiable Random number and Chainlink Keepers to automatically trigger to pick winner when the time interval is Up!!
 
 # Steps
 
