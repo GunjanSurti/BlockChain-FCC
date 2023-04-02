@@ -1,3 +1,5 @@
+We will Chainlink VRF for verifiable Random number and Chainlink Keepers to automatically trigger to pick winner when the time interval is Up!!
+
 # Steps
 
  -yarn add --dev hardhat
@@ -13,3 +15,9 @@ require("solidity-coverage")
 require("hardhat-gas-reporter")
 require("hardhat-contract-sizer")
 require("dotenv").config()
+
+- .prettierrc file and copy paste
+
+# Raffle.sol Setup
+
+ -contracts >> Raffle.sol
