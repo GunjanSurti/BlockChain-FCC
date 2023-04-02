@@ -35,7 +35,9 @@ contract Raffle {
          * so when we see Tpoic then it will be Indexed parameters
          * Indexed parameters are searchable
          * NonIndexed parameters are harder to search as they are abi encoded so you need abi to decode * them
-         * "emit" the event, this will store data into logging Data Structure  
+         * "emit" the event, this will store data into logging Data Structure 
+         * NonIndexed parameters will be data in etherScan, cost less gas 
+         * we can see after we verify in etherScan 
          *   */
     }
 
