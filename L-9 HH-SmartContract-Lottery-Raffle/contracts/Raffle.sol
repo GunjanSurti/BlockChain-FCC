@@ -22,7 +22,7 @@ contract Raffle {
             revert Raffle__NotEnoughETHEntered();
         }
         s_players.push(payable(msg.sender)); //payable bcz msg.sender is not payable by default
-        
+         
         emit RaffleEntered(msg.sender);
         //It is good to start wirting some tests in early stages so we make sure that the code is working as we want to
     }
