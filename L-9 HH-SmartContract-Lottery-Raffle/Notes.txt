@@ -65,3 +65,8 @@
 
 checkUpkeep	=> Runs off-chain at every block to determine if the performUpkeep function should be called on-chain.
 performUpkeep =>	Contains the logic that should be executed on-chain when checkUpkeep returns true.
+
+/****Enums*****/
+
+it can be used to create custom types with a finite set of "constant values"
+eg.  enum State { Created, Locked, Inactive} 
