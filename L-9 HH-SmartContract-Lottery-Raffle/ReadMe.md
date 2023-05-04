@@ -6,6 +6,10 @@
 - Generally we install dependencies one by one as we need but here we install all.
 - yarn add --dev @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ethers @nomiclabs/hardhat-etherscan @nomiclabs/hardhat-waffle chai ethereum-waffle hardhat hardhat-contract-sizer hardhat-deploy hardhat-gas-reporter prettier prettier-plugin-solidity solhint solidity-coverage dotenv
 - (in order for these dependencies to actually work we have to add in hardhat.config.js).
+- yarn add --dev @chainlink/contracts
+- yarn global add hardhat-shorthand
+
+now runnig hh = yarn hardhat
 
 ## Add this in hardhat.config
 
