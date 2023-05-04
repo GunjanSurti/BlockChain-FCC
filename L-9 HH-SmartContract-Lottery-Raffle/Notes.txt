@@ -32,7 +32,7 @@
          *   
          */
 
-
+               /***************** Chainlink VRF *************************/
         All about Chainlink VRF2 https://docs.chain.link/vrf/v2/introduction/
 
 - The parameters define how your requests will be processed. You can find the values for your network in the Configuration page(https://docs.chain.link/vrf/v2/subscription/supported-networks/).
@@ -54,3 +54,14 @@
     =>fulfillRandomWords(): Receives random values and stores them with your contract.
     
     =>getRequestStatus(): Retrive request details for a given _requestId.
+
+
+    /***************** Chainlink Keepers (Automation)*************************/
+
+    https://docs.chain.link/chainlink-automation/compatible-contracts/
+
+    to use keepers we need 2 functions checkUpKeep and peformUpKeep 
+    and import contract also😅
+
+checkUpkeep	=> Runs off-chain at every block to determine if the performUpkeep function should be called on-chain.
+performUpkeep =>	Contains the logic that should be executed on-chain when checkUpkeep returns true.

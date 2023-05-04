@@ -4,12 +4,13 @@ pragma solidity ^0.8.7;
 /** get the interface so we can interact with contract  */
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
 
 // Custom Error
 error Raffle__NotEnoughETHEntered();
 error Raffle__TransferFailed();
 
-contract Raffle is VRFConsumerBaseV2 {
+contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     /* State variables */
     uint private immutable i_entranceFee; // this is also storage variable
     address payable[] private s_players; // in storage as we are going to add/sub alot all the time
@@ -54,6 +55,22 @@ contract Raffle is VRFConsumerBaseV2 {
         emit RaffleEntered(msg.sender);
         //It is good to start wirting some tests in early stages so we make sure that the code is working as we want to
     }
+
+    /**
+     * @dev This is the function that chainlink Keepers nodes call
+     * they look for "upkeepNeeded" to return true.
+     * the following should be true in order to return true:
+     * 1. Our time interval should have passed
+     * 2. The lottery should have 1 player and have some ETH
+     * 3. Our subscription should be funded with LINK (same as VRF but different  subscription needed)
+     * 4. Lottery should be in an "open" state
+     * 
+     * checkData is in bytes which lets us do anything we want and  even call other function
+     * @return upkeepNeeded
+     * @return performData
+     */
+
+    function checkUpkeep(bytes calldata /*checkData*/) external override returns (bool upkeepNeeded, bytes memory /*performData*/) {}
 
     /** this is where we will use chainlink keepers and Chainlink VRF */
     // external function are cheaper than public
