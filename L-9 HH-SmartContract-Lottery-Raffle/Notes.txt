@@ -11,8 +11,7 @@
  * ChainLink oracles -> Randomness, Automated Execution (ChainLink Keepers)
  */
 
-/**
-         * Events
+       /** Events
          * When ever update any dynamic entities like array / mapping we should emmit "events"
          * Events alloes you to "print" stuff to this log (type of special data structure)
          * Events and Logs live in special data structure that is not accessible by Smart Contracts
@@ -30,7 +29,28 @@
          * NonIndexed parameters will be data in etherScan, cost less gas
          * we can see after we verify in etherScan
          * Name events with the function name reversed  
-         *   */
+         *   
+         */
 
 
         All about Chainlink VRF2 https://docs.chain.link/vrf/v2/introduction/
+
+- The parameters define how your requests will be processed. You can find the values for your network in the Configuration page(https://docs.chain.link/vrf/v2/subscription/supported-networks/).
+
+   =>uint64 s_subscriptionId: The subscription ID that this contract uses for funding requests.
+   
+   => bytes32 keyHash: The gas lane key hash value, which is the maximum gas price you are willing to pay for a request in wei. It functions as an ID of the off-chain VRF job that runs in response to requests.
+   
+   => uint32 callbackGasLimit: The limit for how much gas to use for the callback request to your contract’s fulfillRandomWords() function. It must be less than the maxGasLimit limit on the coordinator contract. Adjust this value for larger requests depending on how your fulfillRandomWords() function processes and stores the received random values. If your callbackGasLimit is not sufficient, the callback will fail and your subscription is still charged for the work done to generate your requested random values.
+   
+   => uint16 requestConfirmations: How many confirmations the Chainlink node should wait before responding. The longer the node waits, the more secure the random value is. It must be greater than the minimumRequestBlockConfirmations limit on the coordinator contract.
+   
+   => uint32 numWords: How many random values to request. If you can use several random values in a single callback, you can reduce the amount of gas that you spend per random value. The total cost of the callback request depends on how your fulfillRandomWords() function processes and stores the received random values, so adjust your callbackGasLimit accordingly.
+   
+   -The contract includes the following functions:
+
+    =>requestRandomWords(): Takes your specified parameters and submits the request to the VRF coordinator contract.
+    
+    =>fulfillRandomWords(): Receives random values and stores them with your contract.
+    
+    =>getRequestStatus(): Retrive request details for a given _requestId.
