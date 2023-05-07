@@ -56,7 +56,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
      * first we pass vrfCoordinator(address) in our contract and then in VRFConsumerBaseV2's constructor
      * @param gasLane : this ensures that the gas price does not go skyrocket and revert when price is too high
      */
-
+    // vrfCoordinatorV2 is contract so we need to deploy mock
     /******************* Functions *****************/
     constructor(address vrfCoordinatorV2, uint entranceFee, bytes32 gasLane, uint64 subscriptionId, uint32 callbackGasLimit, uint256 interval) VRFConsumerBaseV2(vrfCoordinatorV2) {
         /** this is vrf coodrinator contract (vrfCoordinator interface , vrfCoordinator address)  */
@@ -109,7 +109,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         upkeepNeeded = (isOpen && timePassed && hasBalance && hasPlayers);
     }
 
-    // function performUpkeep(bytes calldata performData) external override {}
+
 
     /** this is where we will use chainlink keepers and Chainlink VRF */
     // external function are cheaper than public
@@ -117,6 +117,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
 
     /*requestRandomWinner()*/
     /** if we have performData in checkUpkeep() then we automatically pass in performUpkeep() */
+    // called by oracals ans they pay gas fees 
     function performUpkeep(bytes calldata /*performData*/) external override {
         (bool upkeepNeeded, ) = checkUpkeep("");
         if (!upkeepNeeded) {
@@ -147,7 +148,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     }
 
     /** this function is from VRFConsumerBaseV2.sol
-     * which is called by Oracal
+     * which is called by Oracal and they pay gas fees
      */
     // we dont want to use requestId so we commented out
     function fulfillRandomWords(uint256 /*requestId*/, uint256[] memory randomWords) internal override {

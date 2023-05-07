@@ -70,3 +70,30 @@ performUpkeep =>	Contains the logic that should be executed on-chain when checkU
 
 it can be used to create custom types with a finite set of "constant values"
 eg.  enum State { Created, Locked, Inactive} 
+
+
+            /*********************** Raffle Deployment *************************/
+=> create deploy folder 
+=> vrfCoordinatorV2 is contract so we need to deploy mock for it , as it is outside of our project
+=> 01-depoly-raffle.js 
+=> in hardhat.config.js in module exports
+      namedAccounts: {
+        deployer: {
+            default: 0,
+        },
+        player: {
+            default: 1,
+        },
+    },
+
+=> as we want to deploy mocks we created helper-hardhat-config.js
+=> 00-deploy-mocks.js
+=> in contract folder test > VRFCoordinatorV2Mock.sol
+now we have mock contract we can depoly it 
+
+=> Verification  
+   utils > verify.js (copy paste from last project or GitHub)
+
+=> Tests
+
+=> we should have unit tests before we deploy on "testnets"
