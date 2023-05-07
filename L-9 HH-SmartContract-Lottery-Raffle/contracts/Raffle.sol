@@ -10,6 +10,14 @@ import "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.s
 error Raffle__NotEnoughETHEntered();
 error Raffle__TransferFailed();
 error Raffle__NotOpen();
+error Raffle__UpKeepNotNeeded(uint256 currentBalance, uint256 numPlayers, uint256 raffleState);
+
+/**
+ * @title A Sample Raffle Contract
+ * @author @GunjanSurti
+ * @notice This contract is for creating a sample raffle contract
+ * @dev This implements the Chainlink VRF Version 2
+ */
 
 contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     /** Type declaration  */
@@ -48,6 +56,8 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
      * first we pass vrfCoordinator(address) in our contract and then in VRFConsumerBaseV2's constructor
      * @param gasLane : this ensures that the gas price does not go skyrocket and revert when price is too high
      */
+
+    /******************* Functions *****************/
     constructor(address vrfCoordinatorV2, uint entranceFee, bytes32 gasLane, uint64 subscriptionId, uint32 callbackGasLimit, uint256 interval) VRFConsumerBaseV2(vrfCoordinatorV2) {
         /** this is vrf coodrinator contract (vrfCoordinator interface , vrfCoordinator address)  */
         i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorV2);
@@ -84,11 +94,14 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
      * 4. Lottery should be in an "open" state
      *
      * checkData is in bytes which lets us do anything we want and  even call other function
-     * @return upkeepNeeded
+     * @return upkeepNeeded when this returns true, chainlink nodes will automatically execute performUpkeepfunction
+     *  we write function that gets executed (performUpkeep)
      * @return performData
      */
 
-    function checkUpkeep(bytes calldata /*checkData*/) external override returns (bool upkeepNeeded, bytes memory /*performData*/) {
+    /*** this is trigger */
+    // we need "bytes memory" in arg as keepers are looking for
+    function checkUpkeep(bytes memory /*checkData*/) public override returns (bool upkeepNeeded, bytes memory /*performData*/) {
         bool isOpen = (RaffleState.OPEN == s_raffleState); // if equal then true
         bool timePassed = ((block.timestamp - s_lastTimeStamp) > i_interval); // if equal then true
         bool hasPlayers = (s_players.length > 0);
@@ -96,12 +109,20 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         upkeepNeeded = (isOpen && timePassed && hasBalance && hasPlayers);
     }
 
-    function performUpkeep(bytes calldata performData) external override {}
+    // function performUpkeep(bytes calldata performData) external override {}
 
     /** this is where we will use chainlink keepers and Chainlink VRF */
     // external function are cheaper than public
     // Assumes the subscription is funded sufficiently
-    function requestRandomWinner() external {
+
+    /*requestRandomWinner()*/
+    /** if we have performData in checkUpkeep() then we automatically pass in performUpkeep() */
+    function performUpkeep(bytes calldata /*performData*/) external override {
+        (bool upkeepNeeded, ) = checkUpkeep("");
+        if (!upkeepNeeded) {
+            revert Raffle__UpKeepNotNeeded(address(this).balance, s_players.length, uint256(s_raffleState));
+        }
+
         /** changing state so no one can enter while calculating */
         s_raffleState = RaffleState.CALCULATING; // RaffleState(1) same
         /* request random no.
@@ -137,12 +158,15 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         /** after we got our winner we opened raffle again */
         s_raffleState = RaffleState.OPEN;
         s_players = new address payable[](0); // reset players after winner is picked
+        s_lastTimeStamp = block.timestamp;
         (bool success, ) = recentWinner.call{value: address(this).balance}(""); //("") we are passing no data
         if (!success) {
             revert Raffle__TransferFailed();
         }
         emit WinnerPicked(recentWinner);
     }
+
+    /** Getter Functions */
 
     /** View / Pure function */
     /** We Want others to see what is entrance fee */
@@ -151,11 +175,36 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     }
 
     /* Getting Players with index for users */
-    function getPlayers(uint index) public view returns (address) {
+    function getPlayer(uint index) public view returns (address) {
         return s_players[index];
     }
 
     function getRecentWinner() public view returns (address) {
         return s_recentWinner;
+    }
+
+    function getRaffleState() public view returns (RaffleState) {
+        return s_raffleState;
+    }
+
+    /** as NUM_WORDS is in "byteCode" means constant variable so it is nit reading from storage therefore it can be pure  */
+    function getNumWords() public pure returns (uint) {
+        return NUM_WORDS;
+    }
+
+    function getNumberOfPlayers() public view returns (uint256) {
+        return s_players.length;
+    }
+
+    function getLastTimeStamp() public view returns (uint256) {
+        return s_lastTimeStamp;
+    }
+
+    function getInterval() public view returns (uint256) {
+        return i_interval;
+    }
+
+    function getRequestConfirmations() public pure returns (uint256) {
+        return REQUEST_CONFIRMATIONS;
     }
 }
