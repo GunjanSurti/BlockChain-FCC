@@ -97,3 +97,5 @@ now we have mock contract we can depoly it
 => Tests
 
 => we should have unit tests before we deploy on "testnets"
+
+"0x" and [] => empty bytes object hardhat is smart

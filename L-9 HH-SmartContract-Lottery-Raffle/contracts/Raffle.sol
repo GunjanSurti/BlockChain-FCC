@@ -49,7 +49,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     event WinnerPicked(address indexed winner);
 
     /**
-     * @param vrfCoordinatorV2 is address of contract that does random no verification
+     * @param vrfCoordinatorV2 is address of contract that does random no. verification
      * @param entranceFee for Raffle
      * we passed VRFConsumerBaseV2's constructor too
      * here we have passed two constructor 1. for our contract and 2. VRFConsumerBaseV2 contract
@@ -109,15 +109,13 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         upkeepNeeded = (isOpen && timePassed && hasBalance && hasPlayers);
     }
 
-
-
     /** this is where we will use chainlink keepers and Chainlink VRF */
     // external function are cheaper than public
     // Assumes the subscription is funded sufficiently
 
     /*requestRandomWinner()*/
     /** if we have performData in checkUpkeep() then we automatically pass in performUpkeep() */
-    // called by oracals ans they pay gas fees 
+    // called by oracals ans they pay gas fees
     function performUpkeep(bytes calldata /*performData*/) external override {
         (bool upkeepNeeded, ) = checkUpkeep("");
         if (!upkeepNeeded) {
@@ -125,7 +123,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         }
 
         /** changing state so no one can enter while calculating */
-        s_raffleState = RaffleState.CALCULATING; // RaffleState(1) same
+        s_raffleState = RaffleState.CALCULATING; // RaffleState(1) same, closed state
         /* request random no.
          * Once we get it, do something with it
          * chainlink VRF is 2 tx process(intentional)
@@ -188,7 +186,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         return s_raffleState;
     }
 
-    /** as NUM_WORDS is in "byteCode" means constant variable so it is nit reading from storage therefore it can be pure  */
+    /** as NUM_WORDS is in "byteCode" means constant variable so it is not reading from storage therefore it can be pure  */
     function getNumWords() public pure returns (uint) {
         return NUM_WORDS;
     }

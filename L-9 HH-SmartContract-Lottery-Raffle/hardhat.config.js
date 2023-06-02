@@ -6,10 +6,8 @@ require("hardhat-gas-reporter")
 require("hardhat-contract-sizer")
 require("dotenv").config()
 
-
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL || "https://eth-goerli.g.alchemy.com/v2/k-AFUR8QJ1I5lfAamAgP51IzWeN5P2AC"
-const PRIVATE_KEY = process.env.PRIVATE_KEY 
-
+const PRIVATE_KEY = process.env.PRIVATE_KEY
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -25,6 +23,12 @@ module.exports = {
             chainId: 5,
             blockConfirmations: 6,
         },
+    },
+    gasReporter: {
+        enabled: false,
+        currency: "USD",
+        outputFile: "gas-report.txt",
+        noColors: true,
     },
     solidity: "0.8.7",
     namedAccounts: {
