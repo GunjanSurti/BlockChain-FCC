@@ -37,6 +37,9 @@ const { assert, expect } = require("chai")
                   assert.equal(playerFromContract, deployer)
               })
               it("emits event on enter", async () => {
+                  /**
+                   * Emmiting Event
+                   **/
                   await expect(raffle.enterRaffle({ value: raffleEntranceFee })).to.emit(raffle /**contract */, "RaffleEntered" /**event name */)
               })
               it("doesn't allow entrance when raffle is calculating", async () => {
@@ -90,6 +93,41 @@ const { assert, expect } = require("chai")
                   await network.provider.send("evm_mine", [])
                   const { upkeepNeeded } = await raffle.callStatic.checkUpkeep("0x")
                   assert(upkeepNeeded)
+              })
+          })
+          describe("peformUpkeep", () => {
+              it("can only run when checkUpkeep is true", async () => {
+                  await raffle.enterRaffle({ value: raffleEntranceFee })
+                  await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
+                  await network.provider.send("evm_mine", [])
+                  const tx = await raffle.performUpkeep([])
+                  assert(tx)
+              })
+              it("reverts when checkUpkeep is false", async () => {
+                  await expect(raffle.performUpkeep([])).to.be.revertedWith("Raffle__UpKeepNotNeeded")
+                  // our test is smart enough to know that only name is enough, we dont need the paramaters but we can be specific and
+                  // get parameters by `` and all
+                  // eg `Raffle__UpKeepNotNeeded()` need more thing to work
+              })
+              it("updates the raffle state, emits event and call vrf coordinator", async () => {
+                  await raffle.enterRaffle({ value: raffleEntranceFee })
+                  await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
+                  await network.provider.send("evm_mine", [])
+                  const txReponse = await raffle.performUpkeep([])
+                  const txReceipt = await txReponse.wait(1)
+                  /**geting request Id (form oracal) 
+                   * from vrfCoordinatorV2Mock 
+                   * emit RandomWordsRequested(
+                        _keyHash,
+                        requestId,
+                        preSeed,
+                        _subId,
+                        _minimumRequestConfirmations,
+                        _callbackGasLimit,
+                        _numWords,
+                        msg.sender
+                        );
+                  */
               })
           })
       })
