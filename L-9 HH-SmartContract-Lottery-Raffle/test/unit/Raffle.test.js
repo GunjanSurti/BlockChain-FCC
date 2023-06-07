@@ -5,13 +5,13 @@ const { assert, expect } = require("chai")
 // running unit test on developmentChains only
 // making sure that we are on testnet not "hardhat", "localhost"
 !developmentChains.includes(network.name)
-    ? describe().skip
+    ? describe.skip
     : describe("Raffle Unit Test", function () {
           let raffle, vrfCoordinatorV2Mock, raffleEntranceFee, deployer, interval
           const chainId = network.config.chainId
           beforeEach(async function () {
               deployer = (await getNamedAccounts()).deployer
-              await deployments.fixture(["all"]) // deploying everything (means tags)
+              await deployments.fixture(["all"]) // deploying everything (means tags, deploy sctipts)
               raffle = await ethers.getContract("Raffle", deployer /** connect with deployer */)
               vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock", deployer)
               raffleEntranceFee = await raffle.getEntranceFee()

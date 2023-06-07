@@ -101,3 +101,8 @@ now we have mock contract we can depoly it
 "0x" and [] => empty bytes object hardhat is smart
 
  had to remove onlyValidConsumer in VRFCoordinatorV2Mock in request random word 
+
+
+/**********************************************************/
+ 
+ scripts -> enter.js
