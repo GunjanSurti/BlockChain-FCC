@@ -106,7 +106,7 @@ const { assert, expect } = require("chai")
               it("reverts when checkUpkeep is false", async () => {
                   await expect(raffle.performUpkeep([])).to.be.revertedWith("Raffle__UpKeepNotNeeded")
                   // our test is smart enough to know that only name is enough, we dont need the paramaters but we can be specific and
-                  // get parameters by `` and all
+                  // get parameters by ``(backticks) and all
                   // eg `Raffle__UpKeepNotNeeded()` need more thing to work
               })
               it("updates the raffle state, emits event and call vrf coordinator", async () => {
@@ -115,19 +115,101 @@ const { assert, expect } = require("chai")
                   await network.provider.send("evm_mine", [])
                   const txReponse = await raffle.performUpkeep([])
                   const txReceipt = await txReponse.wait(1)
-                  /**geting request Id (form oracal) 
-                   * from vrfCoordinatorV2Mock 
-                   * emit RandomWordsRequested(
-                        _keyHash,
-                        requestId,
-                        preSeed,
-                        _subId,
-                        _minimumRequestConfirmations,
-                        _callbackGasLimit,
-                        _numWords,
-                        msg.sender
-                        );
-                  */
+                  /**geting request Id (form oracal)
+                   * from vrfCoordinatorV2Mock
+                   * emit RandomWordsRequested(_keyHash,requestId,preSeed,_subId,_minimumRequestConfirmations,_callbackGasLimit,_numWords,msg.sender);
+                   */
+                  const requestId = txReceipt.events[1].args.requestId
+                  /** events[1] bcz i_vrfCoordinator.requestRandomWords(){form VRFCoordinatorV2Mock contract} will emit event first
+                   *  then our event  */
+                  const raffleState = await raffle.getRaffleState()
+                  assert(requestId.toNumber() > 0)
+                  assert(raffleState.toString() == "1")
+              })
+          })
+          describe("fulfillRandomWords", () => {
+              // we already want someone to have in raffle so...
+              beforeEach(async () => {
+                  await raffle.enterRaffle({ value: raffleEntranceFee })
+                  await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
+                  await network.provider.send("evm_mine", [])
+              })
+              // fulfillRandomWords can only be call when there is requestId (requestRandomWords has been called)
+              it("can only be called after peformUpkeep", async () => {
+                  // revert on request that dont exist
+                  /**
+                 *   function fulfillRandomWords(uint256 _requestId, address _consumer) external {
+                         fulfillRandomWordsWithOverride(_requestId, _consumer, new uint256[](0));
+                     }
+                 */
+                  await expect(vrfCoordinatorV2Mock.fulfillRandomWords(0, raffle.address)).to.be.revertedWith("nonexistent request")
+                  await expect(vrfCoordinatorV2Mock.fulfillRandomWords(1, raffle.address)).to.be.revertedWith("nonexistent request")
+                  // we cannot check for every requestId now, but we can by fuzz testing
+              })
+              it("picks a winner, resets the raffle and sends money", async () => {
+                  const additionalEntrace = 3 //fake people
+                  const startingAccountIndex = 1 // deployer = 0
+                  const accounts = await ethers.getSigners()
+
+                  for (let i = startingAccountIndex; i < startingAccountIndex + additionalEntrace; i++) {
+                      /** ethersjs
+                         * contract.connect( providerOrSigner ) ⇒ Contractsource
+                         Returns a new instance of the Contract, but connected to providerOrSigner.
+
+                         By passing in a Provider, this will return a downgraded Contract which only has read-only access (i.e. constant calls).
+
+                         By passing in a Signer. this will return a Contract which will act on behalf of that signer
+                       */
+                      // connecting new accounts to our raffle contract
+                      // by connecting account to contract we can directly call function
+                      const accConnectedRaffle = await raffle.connect(accounts[i])
+                      // enter into raffle
+                      await accConnectedRaffle.enterRaffle({ value: raffleEntranceFee })
+                      // we have 4 people in raffle
+                  }
+                  const startingTimeStamp = await raffle.getLastTimeStamp()
+                  // peformUpkeep (mock being chainlink keepers)
+                  // fulfillRandomWords (mock being chainlink VRF)
+                  // in real testnet we have to wait for fulfillRandomWords
+                  await new Promise(async (resolve, reject) => {
+                      // once event is emited(WinnerPicked) do some stuff
+                      // this is our listner
+                      raffle.once("WinnerPicked", async () => {
+                          // we dont want to listen for forever so we set timeout in hardhat.config (mocha...)
+                          console.log("Found the Event!!!")
+
+                          try {
+                              const recentWinner = await raffle.getRecentWinner()
+                              console.log(`Recent Winner : ` + recentWinner) // from event
+                              // try to find who the random winner is
+
+                              const raffleState = await raffle.getRaffleState()
+                              const endingTimeStamp = await raffle.getLastTimeStamp()
+                              const numPlayers = await raffle.getNumberOfPlayers()
+                              const winnerEndingBalacnce = await accounts[1].getBalance()
+                              assert.equal(numPlayers.toString(), "0")
+                              assert.equal(raffleState.toString(), "0")
+                              assert(endingTimeStamp > startingTimeStamp)
+                              assert(winnerEndingBalacnce.toString(), winnerStratingBalance.add(raffleEntranceFee).mul(additionalEntrace).add(raffleEntranceFee).toString())
+                          } catch (e) {
+                              reject(e)
+                          }
+                          resolve()
+                      })
+
+                      // first we are setting up listner(Promise) so our listener can listen for events to be emitted
+                      // and then all things like peformUpkeep, fulfillRandomWords will be called here
+                      // so we are writing inside of promise but outside of event listner
+                      // if we write outside of promise then the code will not reach others as the promise is not resolve
+                      // so below we will fire event and this listner will pick it up and resolve
+                      // chainlink  keepers
+                      const tx = await raffle.performUpkeep([])
+                      const txReceipt = await tx.wait(1)
+                      const winnerStratingBalance = await accounts[1].getBalance()
+                      // chainlink VRF
+                      // this function should emit WinnerPicked event
+                      await vrfCoordinatorV2Mock.fulfillRandomWords(txReceipt.events[1].args.requestId, raffle.address /**consumer address is contract  */)
+                  })
               })
           })
       })

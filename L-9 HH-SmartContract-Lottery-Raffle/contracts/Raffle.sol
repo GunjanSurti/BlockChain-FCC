@@ -6,8 +6,6 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
 
-
-
 // Custom Error
 error Raffle__NotEnoughETHEntered();
 error Raffle__TransferFailed();
@@ -82,8 +80,8 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         }
         s_players.push(payable(msg.sender)); //payable bcz msg.sender is not payable by default
 
-        /** this event is useless as the VRFCoordniatorV2Mock contract also emits event 
-         * so we dont need this 
+        /** this event is useless as the VRFCoordniatorV2Mock contract also emits event
+         * so we dont need this
          * and also it emits many things
          */
         emit RaffleEntered(msg.sender);
@@ -148,6 +146,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
          */
 
         emit RequestedRaffleWinner(requestId);
+
         // we will get "array" of randomNumber
     }
 

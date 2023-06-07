@@ -16,6 +16,7 @@ module.exports = {
         hardhat: {
             chainId: 31337,
             // gasPrice: 130000000000,
+            blockConfirmations: 1,
         },
         goerli: {
             url: GOERLI_RPC_URL,
@@ -38,5 +39,9 @@ module.exports = {
         player: {
             default: 1,
         },
+    },
+    mocha: {
+        timeout: 300000, // 300s max (for test net also so its high bcz real block needs time )
+        // so when evet doesnt get fired this if will fail
     },
 }

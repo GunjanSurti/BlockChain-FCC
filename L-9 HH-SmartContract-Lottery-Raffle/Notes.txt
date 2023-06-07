@@ -99,3 +99,5 @@ now we have mock contract we can depoly it
 => we should have unit tests before we deploy on "testnets"
 
 "0x" and [] => empty bytes object hardhat is smart
+
+ had to remove onlyValidConsumer in VRFCoordinatorV2Mock in request random word 
