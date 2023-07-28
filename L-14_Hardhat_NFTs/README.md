@@ -3,7 +3,9 @@
 - yarn add --dev hardhat
 - yarn hardhat (empty and copy paste L-9)
 - yarn (to install dependencies)
-- yarn add --dev @openzepplin/contracts
+- yarn add --dev @openzeppelin/contracts
+- yarn add --dev hardhat @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ethers
+- yarn add --dev @chainlink/contracts
 
 ## We will do 3 Contract
 

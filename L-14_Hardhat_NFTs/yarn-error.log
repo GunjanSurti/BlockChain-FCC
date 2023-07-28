@@ -30,13 +30,14 @@ npm manifest:
   {
     "name": "hardhat-nft-fcc",
     "devDependencies": {
+      "@nomicfoundation/hardhat-ethers": "^3.0.2",
       "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
       "@nomiclabs/hardhat-etherscan": "^3.0.3",
       "@nomiclabs/hardhat-waffle": "^2.0.3",
       "chai": "^4.3.4",
       "ethereum-waffle": "^3.4.0",
       "ethers": "^5.5.4",
-      "hardhat": "^2.9.0",
+      "hardhat": "^2.17.0",
       "hardhat-deploy": "^0.10.5",
       "hardhat-gas-reporter": "^1.0.7",
       "prettier": "^2.5.1",
@@ -854,6 +855,14 @@ Lockfile:
       ethereum-cryptography "0.1.3"
       mcl-wasm "^0.7.1"
       rustbn.js "~0.2.0"
+  
+  "@nomicfoundation/hardhat-ethers@^3.0.2":
+    version "3.0.4"
+    resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-ethers/-/hardhat-ethers-3.0.4.tgz#6f0df2424e687e26d6574610de7a36bd69485cc1"
+    integrity sha512-k9qbLoY7qn6C6Y1LI0gk2kyHXil2Tauj4kGzQ8pgxYXIGw8lWn8tuuL72E11CrlKaXRUvOgF0EXrv/msPI2SbA==
+    dependencies:
+      debug "^4.1.1"
+      lodash.isequal "^4.5.0"
   
   "@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.1":
     version "0.1.1"
@@ -5309,7 +5318,7 @@ Lockfile:
       eth-gas-reporter "^0.2.25"
       sha1 "^1.1.1"
   
-  hardhat@^2.9.0:
+  hardhat@^2.17.0:
     version "2.17.0"
     resolved "https://registry.yarnpkg.com/hardhat/-/hardhat-2.17.0.tgz#574478790fa4f4a45c5ccf162e82e54f36671749"
     integrity sha512-CaEGa13tkJNe2/rdaBiive4pmdNShwxvdWVhr1zfb6aVpRhQt9VNO0l/UIBt/zzajz38ZFjvhfM2bj8LDXo9gw==
@@ -6809,6 +6818,11 @@ Lockfile:
     version "4.2.0"
     resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
     integrity sha512-hFuH8TY+Yji7Eja3mGiuAxBqLagejScbG8GbG0j6o9vzn0YL14My+ktnqtZgFTosKymC9/44wP6s7xyuLfnClw==
+  
+  lodash.isequal@^4.5.0:
+    version "4.5.0"
+    resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+    integrity sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==
   
   lodash.truncate@^4.4.2:
     version "4.4.2"
