@@ -26,8 +26,6 @@ require("hardhat-contract-sizer")
 require("dotenv").config()
 ```
 
-#
-
 ## Prettier
 
 - add .prettierrc file in root and copy paste
@@ -41,8 +39,6 @@ require("dotenv").config()
     "printWidth": 500
 }
 ```
-
-#
 
 # Raffle.sol Setup
 
