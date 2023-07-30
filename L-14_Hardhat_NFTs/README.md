@@ -6,6 +6,7 @@
 - yarn add --dev @openzeppelin/contracts
 - yarn add --dev hardhat @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ethers
 - yarn add --dev @chainlink/contracts
+- yarn add --dev @pinata/sdk
 
 ## We will do 3 Contract
 
