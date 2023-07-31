@@ -7,6 +7,8 @@
 - yarn add --dev hardhat @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ethers
 - yarn add --dev @chainlink/contracts
 - yarn add --dev @pinata/sdk
+- yarn add --dev path
+- yarn add ethers@5.7.2
 
 ## We will do 3 Contract
 
