@@ -72,7 +72,8 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         s_dogTokenUris = dogTokenUris;
         s_tokenCounter = 0;
     }
-        // _initializeContract(dogTokenUris);
+
+    // _initializeContract(dogTokenUris);
 
     // It will be in two transaction 1st-requestNft and 2nd-fulfillRandomWords
 
@@ -114,6 +115,7 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         uint256 newTokenId = s_tokenCounter;
         uint256 moddedRng = randomWords[0] % MAX_CHANCE_VALUE; // this will be 0-99
         Breed dogBreed = getBreedFromModdedRng(moddedRng);
+        s_tokenCounter += s_tokenCounter;
         _safeMint(dogOwner, newTokenId);
         // _setTokenURI is not gas efficient but has most customization
 
@@ -128,10 +130,10 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         uint256 cumulativeSum = 0;
         uint256[3] memory chanceArray = getChanceArray();
         for (uint i = 0; i < chanceArray.length; i++) {
-            if (moddedRng >= cumulativeSum && moddedRng < cumulativeSum + chanceArray[i]) {
+            if (moddedRng >= cumulativeSum && moddedRng < chanceArray[i]) {
                 return Breed(i);
             }
-            cumulativeSum += chanceArray[i];
+            cumulativeSum = chanceArray[i];
         }
         // for some reason if no breed id chosen then
         revert RandomIpfsNft__RangeOutOfBounds();

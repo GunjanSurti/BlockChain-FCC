@@ -14,4 +14,13 @@
 
 - 1.Basic Nft
 - 2.Random IPFS Nft
+  - Pros: Cheap
+  - Cons: Someone needs to pin our data
+
 - 3.Dynamic SVG Nft
+  - Pros: The data is on chain
+  - Cons: MUCH more Expensive
+
+``
+after uploding to pinata it is recomended to pin in ipfs too by importing
+``

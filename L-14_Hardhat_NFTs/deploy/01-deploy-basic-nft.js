@@ -16,10 +16,10 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     })
 
     // Verify the deployment
-    // if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-    //     log("Verifying...")
-    //     await verify(basicNft.address, arguments)
-    // }
+    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+        log("Verifying...")
+        await verify(basicNft.address, arguments)
+    }
 }
 
 module.exports.tags = ["all", "basicnft", "main"]
