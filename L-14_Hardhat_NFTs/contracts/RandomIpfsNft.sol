@@ -2,6 +2,7 @@
 pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+// ERC721URIStorage bcz we are going to set tokenUri from outside of contract
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
@@ -135,6 +136,9 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
             }
             cumulativeSum = chanceArray[i];
         }
+        // Pug = 0 - 9  (10%)
+        // Shiba-inu = 10 - 39  (30%)
+        // St. Bernard = 40 = 99 (60%)
         // for some reason if no breed id chosen then
         revert RandomIpfsNft__RangeOutOfBounds();
     }
@@ -149,7 +153,7 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         return [10, 30, MAX_CHANCE_VALUE];
     }
 
-    function tokenURI(uint256) public view override returns (string memory) {}
+    // function tokenURI(uint256) public view override returns (string memory) {}
 
     function getMintFee() public view returns (uint256) {
         return i_mintFee;

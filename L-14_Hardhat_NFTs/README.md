@@ -9,6 +9,7 @@
 - yarn add --dev @pinata/sdk
 - yarn add --dev path
 - yarn add ethers@5.7.2
+- yarn add --dev base64-sol
 
 ## We will do 3 Contract
 
