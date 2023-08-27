@@ -47,7 +47,7 @@ contract DynamicSvgNft is ERC721 {
 
     // form ERC-721 contract
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        require(_exists(tokenId), "URI Query for nonexistent token"); // _exist is from ERC contract
+        // require(_exists(tokenId), "URI Query for nonexistent token"); // _exist is from ERC contract
         // string memory imageURI = "hi!";
 
         (, int256 price, , , ) = i_priceFeed.latestRoundData();
@@ -67,11 +67,11 @@ contract DynamicSvgNft is ERC721 {
                     _baseURI(),
                     Base64.encode(
                         bytes(
-                            abi.encode(
+                            abi.encodePacked(
                                 '{"name":"',
                                 name(),
-                                '", "description":"An NFT that changes based on ChainLink Feed",',
-                                '"attributes":[{"trait_type":"coolness","value":100}],"image":"',
+                                '", "description":"An NFT that changes based on the Chainlink Feed", ',
+                                '"attributes": [{"trait_type": "coolness", "value": 100}], "image":"',
                                 imageURI,
                                 '"}'
                             )

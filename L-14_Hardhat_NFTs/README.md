@@ -25,3 +25,8 @@
 ``
 after uploding to pinata it is recomended to pin in ipfs too by importing
 ``
+
+## DynamicSvg
+
+- if you want to transact in remix then you should give lowSvg and highSvg in utf8 encoding only
+- only then it will pass and get deployed

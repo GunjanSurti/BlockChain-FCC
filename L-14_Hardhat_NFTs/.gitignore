@@ -5,3 +5,4 @@ cache
 coverage*
 coverage.json
 yarn-error.log
+deployments

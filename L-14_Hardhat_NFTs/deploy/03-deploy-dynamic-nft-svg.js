@@ -1,5 +1,6 @@
 const { network } = require("hardhat")
-const { developmentChains } = require("../helper-hardhat-config")
+// const { developmentChains } = require("../helper-hardhat-config")
+const { developmentChains, networkConfig } = require("../helper-hardhat-config")
 
 const { verify } = require("../utils/verify")
 const fs = require("fs")
@@ -7,6 +8,7 @@ const fs = require("fs")
 module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
+    log(deployer)
     const chainId = network.config.chainId
     let ethUsdPriceFeedAddress
 
@@ -20,6 +22,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     const lowSVG = fs.readFileSync("./images/dynamicNfts/frown.svg", { encoding: "utf8" })
     const highSVG = fs.readFileSync("./images/dynamicNfts/happy.svg", { encoding: "utf8" })
+    console.log(highSVG);
 
     arguments = [ethUsdPriceFeedAddress, lowSVG, highSVG]
     const dynamicSvgNft = await deploy("DynamicSvgNft", {
