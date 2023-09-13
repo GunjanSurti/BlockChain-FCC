@@ -20,14 +20,15 @@ const networkConfig = {
         gasLane: "0x79d3d8832d904592c0bf9818b621522c988bb8b0c05cdc3b15aea1b6e8db0c15",
         callbackGasLimit: "500000",
         interval: "30",
+        keepersUpdateInterval: "30"
     },
 }
 
 // we only want to deploy when we are on dev chain
 const developmentChains = ["hardhat", "localhost"]
 const VERIFICATION_BLOCK_CONFIRMATIONS = 6
-const frontEndContractsFile = "../nextjs-smartcontract-lottery-fcc/constants/contractAddresses.json"
-const frontEndAbiFile = "../nextjs-smartcontract-lottery-fcc/constants/abi.json"
+const frontEndContractsFile = "../L-10_HH_FCC_NextJs_Lottery_FullStack/nextjslottery/constants/contractAddresses.json"
+const frontEndAbiFile = "../L-10_HH_FCC_NextJs_Lottery_FullStack/nextjslottery/constants/abi.json"
 
 module.exports = {
     networkConfig,

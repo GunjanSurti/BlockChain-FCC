@@ -30,7 +30,7 @@ require("dotenv").config()
 
 - add .prettierrc file in root and copy paste
 
-```sh
+```js
  {
     "tabWidth": 4,
     "useTabs": false,
