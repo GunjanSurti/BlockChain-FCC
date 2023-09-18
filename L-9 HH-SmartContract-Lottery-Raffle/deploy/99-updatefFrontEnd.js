@@ -24,12 +24,18 @@ async function updateContractAddresses() {
     const contractAddresses = JSON.parse(fs.readFileSync(frontEndContractsFile, "utf8"))
 
     if (chainId in contractAddresses) {
+        // if chainId is already there...
         if (!contractAddresses[chainId].includes(raffle.address)) {
+            // this will when there is no address but has chainId
             contractAddresses[chainId].push(raffle.address)
         }
+        console.log("if")
     } else {
         contractAddresses[chainId] = [raffle.address]
+        // this will run when there is no chainId and will add New id and address
+        console.log("else")
     }
     fs.writeFileSync(frontEndContractsFile, JSON.stringify(contractAddresses))
 }
+
 module.exports.tags = ["all", "frontend"]

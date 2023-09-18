@@ -16,10 +16,11 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
         vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address
         // as we dont have subscriptionId in local network we are doing programatically
         const transactionResponse = await vrfCoordinatorV2Mock.createSubscription()
-        console.log(transactionResponse);
+        // console.log(transactionResponse);
         // by createSubscription() =>   emit SubscriptionCreated(s_currentSubId, msg.sender);
         const transactionReceipt = await transactionResponse.wait(1)
         subscriptionId = transactionReceipt.events[0].args.subId
+        
         //Fund the subscription
         //usually we need Link Token on real network
         await vrfCoordinatorV2Mock.fundSubscription(subscriptionId, VRF_SUB_FUND_AMT)
