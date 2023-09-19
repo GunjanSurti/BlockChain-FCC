@@ -19,7 +19,7 @@ contract SmallProxy is Proxy {
         }
     }
 
-    // openzeppelin
+    // openzeppelin (node_modules/@openzeppelin/contracts/proxy/Proxy.sol)
     function _implementation() internal view override returns (address implementationAddress) {
         assembly {
             implementationAddress := sload(_IMPLEMENTATION_SLOT)

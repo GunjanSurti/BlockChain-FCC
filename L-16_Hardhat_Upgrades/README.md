@@ -9,4 +9,4 @@
 
 1. deploy proxy manually
 2. Hardhat deploy also comes proxies (we are doing this )
-3.Openzeppline "upgrades" plugin (in scripts folder)
+3. Openzeppline "upgrades" plugin (in scripts folder)

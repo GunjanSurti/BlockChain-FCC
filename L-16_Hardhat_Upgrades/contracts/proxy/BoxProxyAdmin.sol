@@ -10,4 +10,5 @@ contract BoxProxyAdmin is ProxyAdmin {
     ) ProxyAdmin() {
         // We just need this for our hardhat tooling right now
     }
+    
 }
